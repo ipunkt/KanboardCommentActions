@@ -1,16 +1,21 @@
 <?php
 
-namespace Kanboard\Plugin\commentactions;
+namespace Kanboard\Plugin\CommentActions;
 
 use Kanboard\Core\Filter\LexerBuilder;
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
-use Kanboard\Plugin\KanboardSearchPlugin\Filter\AdvancedSearchFilter;
 
 class Plugin extends Base
 {
     public function initialize()
     {
+
+        $this->template->hook->attach("template:config:sidebar",
+            "CommentActions:config/sidebar");
+
+        $this->route->addRoute('settings/commentactions', 'CommentActionsController', 'index',
+            'CommentActions');
 
     }
 
