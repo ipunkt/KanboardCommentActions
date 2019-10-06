@@ -15,11 +15,8 @@ class CommentActionsController extends BaseController
      */
     public function index()
     {
-        $this->response->html($this->helper->layout->config('CommentActions:config/comment-actions-settings', array(
-            'db_size' => $this->configModel->getDatabaseSize(),
-            'db_version' => $this->db->getDriver()->getDatabaseVersion(),
-            'user_agent' => $this->request->getServerVariable('HTTP_USER_AGENT'),
-            'title' => 'Settings' . ' &gt; ' . 'comment actions',
+        $this->response->html($this->helper->layout->config('CommentActions:config/task_comments-actions-settings', array(
+            'title' => t('Settings').' &gt; '.t('Comment Actions')
         )));
     }
 

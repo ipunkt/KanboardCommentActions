@@ -10,13 +10,11 @@ class Plugin extends Base
 {
     public function initialize()
     {
-
         $this->template->hook->attach("template:config:sidebar",
             "CommentActions:config/sidebar");
-
         $this->route->addRoute('settings/commentactions', 'CommentActionsController', 'index',
             'CommentActions');
-
+        $this->template->setTemplateOverride('task_comments/create', 'CommentActions:task_comments/create');
     }
 
     public function onStartup()
@@ -30,7 +28,7 @@ class Plugin extends Base
 
     public function getPluginDescription()
     {
-        return ;
+        return 'Description';
     }
 
     public function getPluginAuthor()
