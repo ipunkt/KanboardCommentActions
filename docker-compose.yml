@@ -1,4 +1,9 @@
-version: '2'
+version: '3.4'
+x-xdebug-settings: &xdebug-settings
+  XDEBUG_REMOTE_AUTOSTART: "On"
+  XDEBUG_REMOTE_CONNECT_BACK: "Off"
+  XDEBUG_REMOTE_HOST: "127.0.0.1"
+  XDEBUG_PROFILER_ENABLE: "On"
 services:
   kanboard:
     image: kanboard/kanboard:latest
@@ -8,6 +13,7 @@ services:
       - .:/var/www/app/plugins/CommentActions
     environment:
       DATABASE_URL: mysql://kb:kb-secret@db/kanboard
+      <<: *xdebug-settings
   pma:
     image: phpmyadmin/phpmyadmin
     ports:
@@ -24,4 +30,12 @@ services:
       MYSQL_DATABASE: kanboard
       MYSQL_USER: kb
       MYSQL_PASSWORD: kb-secret
+  rights:
+    image: busybox
+    command: sh -c 'while true ; do chown -R $${USER_ID}.$${GROUP_ID} /target ; sleep 2s ; done'
+    volumes:
+      - .:/target
+    environment:
+      - USER_ID=10017
+      - GROUP_ID=10003
 

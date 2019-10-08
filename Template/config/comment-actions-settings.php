@@ -1,7 +1,7 @@
 <div class="page-header">
     <h2><?= t('Comment Actions') ?></h2>
 </div>
-<form method="post" action="<?= $this->url->href('CommentActionsController', 'save', ['plugin' => 'CommentActions']) ?>" autocomplete="off">
+<form method="post" action="<?= $this->url->href('CommentActionsSettingsController', 'save', ['plugin' => 'CommentActions']) ?>" autocomplete="off">
     <?= $this->form->csrf() ?>
 
     <fieldset>

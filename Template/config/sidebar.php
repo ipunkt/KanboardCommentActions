@@ -1,4 +1,4 @@
-<li <?= $this->app->checkMenuSelection('CommentActionsController', 'index') ?>>
-    <?= $this->url->link(t('Comment Actions settings'), 'CommentActionsController', 'index',
+<li <?= $this->app->checkMenuSelection('CommentActionsSettingsController', 'index') ?>>
+    <?= $this->url->link(t('Comment Actions settings'), 'CommentActionsSettingsController', 'index',
         ['plugin' => 'CommentActions']) ?>
 </li>

@@ -1,44 +1,83 @@
 <?php
-
 namespace Kanboard\Plugin\CommentActions\Controller;
 
 
-use Kanboard\Controller\BaseController;
+use Kanboard\Controller\CommentController;
+use Kanboard\Core\Controller\AccessForbiddenException;
+use Kanboard\Core\Controller\PageNotFoundException;
+use Kanboard\Model\ConfigModel;
+use Kanboard\Model\UserModel;
 
-
-class CommentActionsController extends BaseController
+class CommentActionsController extends CommentController
 {
+
     /**
-     * Display settings page
+     * Add comment form
      *
      * @access public
+     * @param array $values
+     * @param array $errors
+     * @throws AccessForbiddenException
+     * @throws PageNotFoundException
      */
-    public function index()
+    public function create(array $values = array(), array $errors = array())
     {
-        $this->response->html($this->helper->layout->config('CommentActions:config/comment-actions-settings', array(
-            'title' => t('Settings').' &gt; '.t('Comment Actions')
+        $project = $this->getProject();
+        $task = $this->getTask();
+        $values['project_id'] = $task['project_id'];
+        $this->response->html($this->helper->layout->task('task_comments/create', array(
+            'values' => $values,
+            'errors' => $errors,
+            'task' => $task,
+            'project' => $project,
+            'comment_actions_enabled' => $this->isCommentActionsEnabled(),
+            'users_list' => $this->getAllUsers()
         )));
     }
 
+    /**
+     * Add a comment
+     *
+     * @access public
+     */
     public function save()
     {
-        $values =  $this->request->getValues();
-        $redirect = $this->request->getStringParam('redirect', 'index');
-        switch ($redirect) {
-            case 'index':
-                $values += array(
-                    'comment_actions' => 0
-                );
-                break;
+        var_dump($this->getAllUsers());
+        die;
+        $task = $this->getTask();
+        $values = $this->request->getValues();
+        $values['task_id'] = $task['id'];
+        $values['user_id'] = $this->userSession->getId();
+        $actionPluginEnabled = $this->isCommentActionsEnabled();
+
+
+        $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
+        if( $actionPluginEnabled && $actionsEnabled ) {
+//            parse text
         }
 
-        if ($this->configModel->save($values)) {
-            $this->languageModel->loadCurrentLanguage();
-            $this->flash->success(t('Settings saved successfully.'));
+
+        list($valid, $errors) = $this->commentValidator->validateCreation($values);
+
+        if ($valid) {
+            if ($this->commentModel->create($values) !== false) {
+                $this->flash->success(t('Comment added successfully.'));
+            } else {
+                $this->flash->failure(t('Unable to create your comment.'));
+            }
+
+            $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id']), 'comments'), true);
         } else {
-            $this->flash->failure(t('Unable to save your settings.'));
+            $this->create($values, $errors);
         }
-        $this->response->redirect($this->helper->url->to('CommentActionsController', 'index', array('plugin' => 'CommentActions')));
+    }
 
+    protected function isCommentActionsEnabled() {
+        return $this->configModel->getOption('comment_actions');
+    }
+
+
+    protected function getAllUsers() {
+        return $this->userModel->getAll();
     }
 }

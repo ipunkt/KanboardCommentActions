@@ -2,9 +2,7 @@
 
 namespace Kanboard\Plugin\CommentActions;
 
-use Kanboard\Core\Filter\LexerBuilder;
 use Kanboard\Core\Plugin\Base;
-use Kanboard\Core\Translator;
 
 class Plugin extends Base
 {
@@ -12,13 +10,18 @@ class Plugin extends Base
     {
         $this->template->hook->attach("template:config:sidebar",
             "CommentActions:config/sidebar");
-        $this->route->addRoute('settings/commentactions', 'CommentActionsController', 'index',
+        $this->route->addRoute('settings/commentactions', 'CommentActionsSettingsController', 'index',
             'CommentActions');
         $this->template->setTemplateOverride('task_comments/create', 'CommentActions:task_comments/create');
     }
 
     public function onStartup()
     {
+    }
+
+    public function getClasses()
+    {
+     return array('Plugin\CommentActions\Controller' => array('CommentActionsController'));
     }
 
     public function getPluginName()
