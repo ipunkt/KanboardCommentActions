@@ -5,11 +5,11 @@
     <?= $this->form->csrf() ?>
     <?= $this->form->hidden('task_id', $values) ?>
     <?= $this->form->hidden('user_id', $values) ?>
-
+<?php echo 'task_comments/create' ?>
     <?= $this->form->textEditor('task_comments', $values, $errors, array('required' => true)) ?>
 
     <!--    --><?php //if (isset($comment_actions_enabled) && $comment_actions_enabled) : ?>
-    <?= $this->form->checkbox('assign_issue', t('Aufgabe zuweisen an'), 1, $values['assign_issue'] == 1) ?>
+    <?= $this->form->checkbox('assign_issue', t('Aufgabe zuweisen an'), 1, 0) ?>
 
 <br>
 

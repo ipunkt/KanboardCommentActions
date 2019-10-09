@@ -42,8 +42,6 @@ class CommentActionsController extends CommentController
      */
     public function save()
     {
-        var_dump($this->getAllUsers());
-        die;
         $task = $this->getTask();
         $values = $this->request->getValues();
         $values['task_id'] = $task['id'];
@@ -53,7 +51,7 @@ class CommentActionsController extends CommentController
 
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
         if( $actionPluginEnabled && $actionsEnabled ) {
-//            parse text
+//            zuweisung an
         }
 
 
@@ -71,6 +69,75 @@ class CommentActionsController extends CommentController
             $this->create($values, $errors);
         }
     }
+
+    /**
+     * Edit a comment
+     *
+     * @access public
+     * @param array $values
+     * @param array $errors
+     * @throws AccessForbiddenException
+     * @throws PageNotFoundException
+     */
+    public function edit(array $values = array(), array $errors = array())
+    {
+        $task = $this->getTask();
+        $comment = $this->getComment($task);
+
+        if (empty($values)) {
+            $values = $comment;
+        }
+
+        $values['project_id'] = $task['project_id'];
+
+        $this->response->html($this->template->render('comment/edit', array(
+            'values' => $values,
+            'errors' => $errors,
+            'comment' => $comment,
+            'task' => $task,
+            'comment_actions_enabled' => $this->isCommentActionsEnabled(),
+            'users_list' => $this->getAllUsers()
+        )));
+    }
+
+    /**
+     * Update and validate a comment
+     *
+     * @access public
+     */
+    public function update()
+    {
+        $task = $this->getTask();
+        $comment = $this->getComment($task);
+
+        $values = $this->request->getValues();
+        $values['id'] = $comment['id'];
+        $values['task_id'] = $task['id'];
+        $values['user_id'] = $comment['user_id'];
+        $actionPluginEnabled = $this->isCommentActionsEnabled();
+
+var_dump($values);
+die;
+        $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
+        if( $actionPluginEnabled && $actionsEnabled ) {
+//            zuweisung an
+        }
+        list($valid, $errors) = $this->commentValidator->validateModification($values);
+
+        if ($valid) {
+            if ($this->commentModel->update($values)) {
+                $this->flash->success(t('Comment updated successfully.'));
+            } else {
+                $this->flash->failure(t('Unable to update your comment.'));
+            }
+
+            $this->response->redirect($this->helper->url->to('TaskViewController', 'show', array('task_id' => $task['id'], 'project_id' => $task['project_id'])), true);
+            return;
+        }
+
+        $this->edit($values, $errors);
+    }
+
 
     protected function isCommentActionsEnabled() {
         return $this->configModel->getOption('comment_actions');
