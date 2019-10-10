@@ -1,5 +1,4 @@
 <?php
-
 namespace Kanboard\Plugin\CommentActions\Controller;
 
 
@@ -13,7 +12,6 @@ class CommentActionsListController extends CommentListController
         $project = $this->getProject();
         $task = $this->getTask();
         $commentSortingDirection = $this->userMetadataCacheDecorator->get(UserMetadataModel::KEY_COMMENT_SORTING_DIRECTION, 'ASC');
-
         $this->response->html($this->template->render('comment_list/show', array(
             'project'  => $project,
             'task'     => $task,

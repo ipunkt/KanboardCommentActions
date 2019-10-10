@@ -25,13 +25,14 @@ class CommentActionsController extends CommentController
         $project = $this->getProject();
         $task = $this->getTask();
         $values['project_id'] = $task['project_id'];
-        $this->response->html($this->helper->layout->task('task_comments/create', array(
+
+        $this->response->html($this->helper->layout->task('comment/create', array(
             'values' => $values,
             'errors' => $errors,
             'task' => $task,
             'project' => $project,
             'comment_actions_enabled' => $this->isCommentActionsEnabled(),
-            'users_list' => $this->getAllUsers()
+            'users_list' => $this->getAllUsers($values['project_id'])
         )));
     }
 
@@ -46,17 +47,21 @@ class CommentActionsController extends CommentController
         $values = $this->request->getValues();
         $values['task_id'] = $task['id'];
         $values['user_id'] = $this->userSession->getId();
+        $values['project_id'] = $task['project_id'];
         $actionPluginEnabled = $this->isCommentActionsEnabled();
-
 
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
         if( $actionPluginEnabled && $actionsEnabled ) {
-//            zuweisung an
+            //TaskModificationController
+            $task['assignee_username'] = 'admin';
+//            var_dump($values);
+//            var_dump($task);
+//            die;
         }
 
-
         list($valid, $errors) = $this->commentValidator->validateCreation($values);
-
+           var_dump($valid, $errors);
+            die;
         if ($valid) {
             if ($this->commentModel->create($values) !== false) {
                 $this->flash->success(t('Comment added successfully.'));
@@ -96,7 +101,7 @@ class CommentActionsController extends CommentController
             'comment' => $comment,
             'task' => $task,
             'comment_actions_enabled' => $this->isCommentActionsEnabled(),
-            'users_list' => $this->getAllUsers()
+            'users_list' => $this->getAllUsers($values['project_id'])
         )));
     }
 
@@ -114,10 +119,9 @@ class CommentActionsController extends CommentController
         $values['id'] = $comment['id'];
         $values['task_id'] = $task['id'];
         $values['user_id'] = $comment['user_id'];
+        $values['project_id'] = $task['project_id'];
         $actionPluginEnabled = $this->isCommentActionsEnabled();
 
-var_dump($values);
-die;
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
         if( $actionPluginEnabled && $actionsEnabled ) {
 //            zuweisung an
@@ -144,7 +148,14 @@ die;
     }
 
 
-    protected function getAllUsers() {
-        return $this->userModel->getAll();
+    protected function getAllUsers($project_id) {
+        $array = $this->projectUserRoleModel->getAssignableUsersList($project_id);
+        $found_tag['name'] = 'Unassigned';
+        foreach ($array as $key => $tag_name) {
+            if($tag_name == $found_tag['name']) {
+                unset($array[$key]);
+            }
+        }
+        return $this->userModel->prepareList($array);
     }
 }

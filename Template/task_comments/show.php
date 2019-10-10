@@ -20,7 +20,6 @@
                 'is_public' => isset($is_public) && $is_public,
             )) ?>
         <?php endforeach ?>
-
         <?php if ($editable): ?>
             <?= $this->render('task_comments/create', array(
                 'values'   => array(

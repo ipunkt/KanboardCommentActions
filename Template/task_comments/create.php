@@ -1,24 +1,13 @@
 <form method="post"
       action="<?= $this->url->href('CommentActionsController', 'save',
-          array('task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>"
+          array('plugin' => 'CommentActions', 'task_id' => $task['id'], 'project_id' => $task['project_id'])) ?>"
       autocomplete="off">
     <?= $this->form->csrf() ?>
     <?= $this->form->hidden('task_id', $values) ?>
     <?= $this->form->hidden('user_id', $values) ?>
-<?php echo 'task_comments/create' ?>
     <?= $this->form->textEditor('task_comments', $values, $errors, array('required' => true)) ?>
 
-    <!--    --><?php //if (isset($comment_actions_enabled) && $comment_actions_enabled) : ?>
-    <?= $this->form->checkbox('assign_issue', t('Aufgabe zuweisen an'), 1, 0) ?>
-
-<br>
-
-    <?= $this->app->component('select-dropdown-autocomplete', array(
-        'name' => 'user_id',
-        'items' => $users_list,
-        'placeholder' => t('Choose user'),
-    )) ?>
-    <!--    --><?php //endif ?>
+    <?= $this->hook->render('template:task:show:after-texteditor', array('task' => $task, 'project' => $project)) ?>
 
     <?= $this->modal->submitButtons() ?>
 </form>
