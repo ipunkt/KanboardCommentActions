@@ -9,22 +9,21 @@ class Plugin extends Base
 {
     public function initialize()
     {
-        $project_id = '';
+        $project_id = '1';
 
-        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-        if(strpos($actual_link, 'project')!==false){
-            $data = "project/";
-            $res = substr($actual_link, strpos($actual_link, $data) + 8);
-            $project_id = substr($res, 0, strpos($res, "/"));
-        }
-        var_dump($project_id);
+//        $actual_link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+//        if(strpos($actual_link, 'project')!==false){
+//            $data = "project/";
+//            $res = substr($actual_link, strpos($actual_link, $data) + 8);
+//            $project_id = substr($res, 0, strpos($res, "/"));
+//        }
 
         $this->template->hook->attach("template:config:sidebar",
             "CommentActions:config/sidebar");
         $this->template->hook->attach("template:task:show:after-texteditor",
             "CommentActions:comment_actions",
             array('comment_actions_enabled' => $this->isCommentActionsEnabled(), 'users_list' => $this->getAllUsers($project_id)));
-        $this->template->hook->attach("template:task:comment-create:after-texteditor",
+        $this->template->hook->attach("template:task:comment:after-texteditor",
             "CommentActions:comment_actions",
             array('comment_actions_enabled' => $this->isCommentActionsEnabled(), 'users_list' => $this->getAllUsers($project_id)));
 
@@ -32,6 +31,7 @@ class Plugin extends Base
             'CommentActions');
         $this->template->setTemplateOverride('task_comments/create', 'CommentActions:task_comments/create');
         $this->template->setTemplateOverride('comment/create', 'CommentActions:comment/create');
+        $this->template->setTemplateOverride('comment/edit', 'CommentActions:comment/edit');
     }
 
     public function onStartup()
@@ -78,8 +78,6 @@ class Plugin extends Base
 
     public function getAllUsers($project_id) {
         $array = $this->projectUserRoleModel->getUsers($project_id);
-//        var_dump($array);
-
         return $this->userModel->prepareList($array);
     }
 }
