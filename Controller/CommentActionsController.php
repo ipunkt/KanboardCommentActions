@@ -5,8 +5,6 @@ namespace Kanboard\Plugin\CommentActions\Controller;
 use Kanboard\Controller\CommentController;
 use Kanboard\Core\Controller\AccessForbiddenException;
 use Kanboard\Core\Controller\PageNotFoundException;
-use Kanboard\Model\ConfigModel;
-use Kanboard\Model\UserModel;
 
 class CommentActionsController extends CommentController
 {
@@ -46,12 +44,15 @@ class CommentActionsController extends CommentController
         $values['task_id'] = $task['id'];
         $values['user_id'] = $this->userSession->getId();
         $actionPluginEnabled = $this->isCommentActionsEnabled();
-
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
-        if ($actionPluginEnabled && $actionsEnabled) {
-            $task['owner_id'] = $_POST['user_id'];
+        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
+            $new_owner_values = array(
+                'id' => $task['id'],
+                'owner_id' => $_POST['user_id']);
+            $this->taskModificationModel->update($new_owner_values);
         }
+
         unset($values['assign_issue']);
         list($valid, $errors) = $this->commentValidator->validateCreation($values);
 
@@ -115,8 +116,11 @@ class CommentActionsController extends CommentController
 
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
-        if ($actionPluginEnabled && $actionsEnabled) {
-            $task['owner_id'] = $_POST['user_id'];
+        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
+            $new_owner_values = array(
+                'id' => $task['id'],
+                'owner_id' => $_POST['user_id']);
+            $this->taskModificationModel->update($new_owner_values);
         }
         unset($values['assign_issue']);
 
