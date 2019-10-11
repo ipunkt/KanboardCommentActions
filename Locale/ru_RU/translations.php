@@ -1,6 +1,6 @@
 <?php
 return array(
-    'Assign Task to:' => 'Назначить пользователю:',
+    'Assign Task to:' => 'Назначить за пользователю:',
     'Choose user' => 'Выберете пользователя',
     'Comment added successfully.' => 'Комментарий успешно добавлен.',
     'Unable to create your comment.' => 'Невозможно добавить Ваш комментарий.',
@@ -13,4 +13,7 @@ return array(
     'Settings' => 'Настройки',
     'Comment Actions' => 'Comment Actions',
     'Comment Actions settings' => 'Настройки "Comment Actions"',
+    'This plugin gives the ability to assign actual Task (direct in comment-create section) to one of the users in Project.'
+    => 'Этот плагин даёт возможность (при написании комментария) назначить текущую задачу пользователю из текущего проекта.'
+
 );

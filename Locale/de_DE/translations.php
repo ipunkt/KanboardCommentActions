@@ -13,4 +13,6 @@ return array(
     'Settings' => 'Einstellungen',
     'Comment Actions' => 'Kommentaraktionen',
     'Comment Actions settings' => 'Einstellungen für Kommentaraktionen',
+    'This plugin gives the ability to assign actual Task (direct in comment-create section) to one of the users in Project.'
+    => 'Dieses Plugin bietet die Möglichkeit, einem Benutzer im Projekt eine aktuelle Aufgabe (direkt im Abschnitt zum Erstellen von Kommentaren) zuzuweisen.',
 );
