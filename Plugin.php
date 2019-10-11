@@ -2,8 +2,8 @@
 
 namespace Kanboard\Plugin\CommentActions;
 
-use Kanboard\Core\Http\Request;
 use Kanboard\Core\Plugin\Base;
+use Kanboard\Core\Translator;
 
 class Plugin extends Base
 {
@@ -36,6 +36,7 @@ class Plugin extends Base
 
     public function onStartup()
     {
+        Translator::load($this->languageModel->getCurrentLanguage(), __DIR__.'/Locale');
     }
 
     public function getClasses()
@@ -54,7 +55,7 @@ class Plugin extends Base
 
     public function getPluginDescription()
     {
-        return 'Description';
+        return t('Description');
     }
 
     public function getPluginAuthor()
