@@ -7,7 +7,7 @@
     <?= $this->form->hidden('user_id', $values) ?>
     <?= $this->form->textEditor('comment', $values, $errors, array('required' => true)) ?>
 
-    <?= $this->hook->render('template:task:show:after-texteditor') ?>
+    <?= $this->hook->render('template:task:show:after-texteditor', array($task)) ?>
 
     <?= $this->modal->submitButtons() ?>
 </form>
