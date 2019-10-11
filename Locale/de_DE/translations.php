@@ -8,5 +8,7 @@ return array(
     'Unable to save your settings.' => 'Die Einstellungen können nicht gespeichert werden.',
     'Enable "Comment Actions"' => '"Kommentaraktionen" aktivieren',
     'Save' => 'Speichern',
+    'Settings' => 'Einstellungen',
+    'Comment Actions' => 'Kommentaraktionen',
     'Comment Actions settings' => 'Einstellungen für Kommentaraktionen',
 );

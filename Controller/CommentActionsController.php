@@ -47,10 +47,7 @@ class CommentActionsController extends CommentController
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
         if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
-            $new_owner_values = array(
-                'id' => $task['id'],
-                'owner_id' => $_POST['user_id']);
-            $this->taskModificationModel->update($new_owner_values);
+            $this->assignTo($task);
         }
 
         unset($values['assign_issue']);
@@ -117,10 +114,7 @@ class CommentActionsController extends CommentController
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
         if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
-            $new_owner_values = array(
-                'id' => $task['id'],
-                'owner_id' => $_POST['user_id']);
-            $this->taskModificationModel->update($new_owner_values);
+            $this->assignTo($task);
         }
         unset($values['assign_issue']);
 
@@ -144,5 +138,12 @@ class CommentActionsController extends CommentController
     protected function isCommentActionsEnabled()
     {
         return $this->configModel->getOption('comment_actions');
+    }
+
+    public function assignTo($task) {
+        $new_owner_values = array(
+            'id' => $task['id'],
+            'owner_id' => $_POST['user_id']);
+        return $this->taskModificationModel->update($new_owner_values);
     }
 }
