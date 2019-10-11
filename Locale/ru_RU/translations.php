@@ -1,6 +1,6 @@
 <?php
 return array(
-    'Assign Task to:' => 'Назначить за пользователю:',
+    'Assign Task to:' => 'Назначить задание пользователю:',
     'Choose user' => 'Выберете пользователя',
     'Comment added successfully.' => 'Комментарий успешно добавлен.',
     'Unable to create your comment.' => 'Невозможно добавить Ваш комментарий.',
