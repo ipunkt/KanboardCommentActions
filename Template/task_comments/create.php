@@ -5,7 +5,7 @@
     <?= $this->form->csrf() ?>
     <?= $this->form->hidden('task_id', $values) ?>
     <?= $this->form->hidden('user_id', $values) ?>
-    <?= $this->form->textEditor('task_comments', $values, $errors, array('required' => true)) ?>
+    <?= $this->form->textEditor('comment', $values, $errors, array('required' => true)) ?>
 
     <?= $this->hook->render('template:task:show:after-texteditor') ?>
 
