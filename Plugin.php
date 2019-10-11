@@ -85,7 +85,7 @@ class Plugin extends Base
 
     public function getPluginAuthor()
     {
-        return 'ipunkt Business Solutions';
+        return 'Andrei Volgin, ipunkt Business Solutions';
     }
 
     public function getPluginVersion()
