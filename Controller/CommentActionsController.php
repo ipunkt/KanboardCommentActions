@@ -43,14 +43,11 @@ class CommentActionsController extends CommentController
         $values = $this->request->getValues();
         $values['task_id'] = $task['id'];
         $values['user_id'] = $this->userSession->getId();
-        $actionPluginEnabled = $this->isCommentActionsEnabled();
-        $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
-        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== '') {
-            $this->assignTo($task);
+        if ($_POST['user_id'] !== '') {
+            $this->assignTaskTo($task);
         }
 
-        unset($values['assign_issue']);
         list($valid, $errors) = $this->commentValidator->validateCreation($values);
 
         if ($valid) {
@@ -109,14 +106,10 @@ class CommentActionsController extends CommentController
         $values['id'] = $comment['id'];
         $values['task_id'] = $task['id'];
         $values['user_id'] = $comment['user_id'];
-        $actionPluginEnabled = $this->isCommentActionsEnabled();
 
-        $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
-
-        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
-            $this->assignTo($task);
+        if ($_POST['user_id'] !== '') {
+            $this->assignTaskTo($task);
         }
-        unset($values['assign_issue']);
 
         list($valid, $errors) = $this->commentValidator->validateModification($values);
 
@@ -135,12 +128,7 @@ class CommentActionsController extends CommentController
         $this->edit($values, $errors);
     }
 
-    protected function isCommentActionsEnabled()
-    {
-        return $this->configModel->getOption('comment_actions');
-    }
-
-    public function assignTo($task) {
+    public function assignTaskTo($task) {
         $new_owner_values = array(
             'id' => $task['id'],
             'owner_id' => $_POST['user_id']);
