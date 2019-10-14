@@ -7,7 +7,7 @@
 
     <?= $this->form->textEditor('comment', $values, $errors, array('autofocus' => true, 'required' => true)) ?>
 
-    <?= $this->hook->render('template:task:comment:after-texteditor') ?>
+    <?= $this->hook->render('template:task:comment:after-texteditor', array($task)) ?>
 
     <?= $this->modal->submitButtons() ?>
 </form>
