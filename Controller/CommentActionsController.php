@@ -46,7 +46,7 @@ class CommentActionsController extends CommentController
         $actionPluginEnabled = $this->isCommentActionsEnabled();
         $actionsEnabled = isset($values['assign_issue']) && $values['assign_issue'];
 
-        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== null) {
+        if ($actionPluginEnabled && $actionsEnabled && $_POST['user_id'] !== '') {
             $this->assignTo($task);
         }
 
