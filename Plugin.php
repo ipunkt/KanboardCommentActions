@@ -47,7 +47,7 @@ class Plugin extends Base
     public function getClasses()
     {
         return array(
-            'Plugin\CommentActions\Controller' => array(
+            'Plugin\KanboardCommentActions\Controller' => array(
                 'CommentActionsController',
             )
         );
