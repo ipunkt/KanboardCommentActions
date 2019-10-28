@@ -1,5 +1,5 @@
 <?php
-namespace Kanboard\Plugin\CommentActions\Controller;
+namespace Kanboard\Plugin\KanboardCommentActions\Controller;
 
 
 use Kanboard\Controller\CommentController;

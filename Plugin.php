@@ -1,6 +1,6 @@
 <?php
 
-namespace Kanboard\Plugin\CommentActions;
+namespace Kanboard\Plugin\KanboardCommentActions;
 
 use Kanboard\Core\Plugin\Base;
 use Kanboard\Core\Translator;
@@ -10,7 +10,7 @@ class Plugin extends Base
     public function initialize()
     {
         $this->template->hook->attachCallable("template:task:comment:after-texteditor",
-            "CommentActions:comment_actions", function ($variables) {
+            "KanboardCommentActions:comment_actions", function ($variables) {
                 if (!array_key_exists('project_id', $variables)) {
                     return array();
                 }
@@ -20,7 +20,7 @@ class Plugin extends Base
                 );
             });
         $this->template->hook->attachCallable("template:task:show:after-texteditor",
-            "CommentActions:comment_actions", function ($variables) {
+            "KanboardCommentActions:comment_actions", function ($variables) {
                 if (!array_key_exists('project_id', $variables)) {
                     return array();
                 }
@@ -29,9 +29,9 @@ class Plugin extends Base
                     'users_list' => $this->getAllProjectUsers($projectId),
                 );
             });
-        $this->template->setTemplateOverride('task_comments/create', 'CommentActions:task_comments/create');
-        $this->template->setTemplateOverride('comment/create', 'CommentActions:comment/create');
-        $this->template->setTemplateOverride('comment/edit', 'CommentActions:comment/edit');
+        $this->template->setTemplateOverride('task_comments/create', 'KanboardCommentActions:task_comments/create');
+        $this->template->setTemplateOverride('comment/create', 'KanboardCommentActions:comment/create');
+        $this->template->setTemplateOverride('comment/edit', 'KanboardCommentActions:comment/edit');
     }
 
     public function getAllProjectUsers($project_id)
