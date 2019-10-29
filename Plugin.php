@@ -55,7 +55,7 @@ class Plugin extends Base
 
     public function getPluginName()
     {
-        return 'CommentActions';
+        return 'KanboardCommentActions';
     }
 
     public function getPluginDescription()
