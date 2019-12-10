@@ -36,7 +36,7 @@ class Plugin extends Base
 
     public function getAllProjectUsers($project_id)
     {
-        $array = $this->projectUserRoleModel->getUsers($project_id);
+        $array = $this->projectUserRoleModel->getAllUsers($project_id);
         return $this->userModel->prepareList($array);
     }
 
